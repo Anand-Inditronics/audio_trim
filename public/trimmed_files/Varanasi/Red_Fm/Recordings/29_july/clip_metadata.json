@@ -1,0 +1,16 @@
+[
+  {
+    "hour_file": "20250704-10.mp3",
+    "next_hour_file": "20250704-11.mp3",
+    "tail_clip": "20250704-10_tail.mp3",
+    "head_clip": "20250704-11_head.mp3",
+    "extra_ms": 13
+  },
+  {
+    "hour_file": "20250704-18.mp3",
+    "next_hour_file": "20250704-19.mp3",
+    "tail_clip": "20250704-18_tail.mp3",
+    "head_clip": "20250704-19_head.mp3",
+    "extra_ms": 13
+  }
+]
