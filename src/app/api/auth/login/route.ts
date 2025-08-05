@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import pool from "@/lib/db";
-import cookie from "cookie";
+import { serialize } from "cookie"; // ✅ correct import
 
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   try {
     const { username, password } = await req.json();
 
-    const result = await pool.query("SELECT * FROM auth WHERE username = $1", [
+    const result = await pool.query("SELECT * FROM users WHERE username = $1", [
       username,
     ]);
     const user = result.rows[0];
@@ -45,11 +45,12 @@ export async function POST(req: NextRequest) {
     const res = NextResponse.json({ message: "Login successful" });
     res.headers.set(
       "Set-Cookie",
-      cookie.serialize("authToken", token, {
+      serialize("authToken", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 60 * 60 * 24 * 7, // 7 days
         path: "/",
+        sameSite: "lax",
       })
     );
 
