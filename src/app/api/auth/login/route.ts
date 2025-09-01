@@ -1,4 +1,3 @@
-// src/app/api/auth/login/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -11,7 +10,8 @@ export async function POST(req: NextRequest) {
   try {
     const { username, password } = await req.json();
 
-    const result = await pool.query("SELECT * FROM users WHERE username = $1", [
+    // ✅ Now checking in "auth" table instead of "users"
+    const result = await pool.query("SELECT * FROM auth WHERE username = $1", [
       username,
     ]);
     const user = result.rows[0];
@@ -36,9 +36,7 @@ export async function POST(req: NextRequest) {
     const token = jwt.sign(
       { id: user.id, username: user.username },
       JWT_SECRET,
-      {
-        expiresIn: "7d",
-      }
+      { expiresIn: "7d" }
     );
 
     // Set HTTP-only cookie
